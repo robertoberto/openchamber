@@ -1,4 +1,5 @@
 import type { Part } from '@opencode-ai/sdk/v2';
+import type { TimeFormatPreference } from '@/stores/useUIStore';
 
 /**
  * Helpers for the Raw Messages preview row in the context sidebar.
@@ -105,8 +106,6 @@ export const formatAssistantTokens = (
   output: number,
   formatNumber: (value: number) => string,
 ): string => `${formatNumber(input)} / ${formatNumber(output)}`;
-
-export type TimeFormatPreference = 'auto' | '12h' | '24h';
 
 const resolveHour12 = (preference: TimeFormatPreference): boolean | undefined => {
   if (preference === '12h') return true;
