@@ -539,8 +539,8 @@ export const OpenChamberVisualSettings: React.FC<OpenChamberVisualSettingsProps>
     const hasAppearanceSettings = isVSCode
         ? hasLocalizationSettings
         : (shouldShow('theme') || showMobileLayoutSetting || shouldShow('pwaInstallName') || shouldShow('pwaOrientation') || shouldShow('timeFormat') || shouldShow('weekStart'));
-    const hasLayoutSettings = shouldShow('fontSize') || shouldShow('terminalFontSize') || shouldShow('spacing') || shouldShow('inputBarOffset') || shouldShow('expandedEditorToolbar');
-    const hasNavigationSettings = (shouldShow('terminalQuickKeys') && !isMobile) || shouldShow('fileEditorKeymap');
+    const hasLayoutSettings = shouldShow('fontSize') || shouldShow('terminalFontSize') || shouldShow('spacing') || shouldShow('inputBarOffset');
+    const hasNavigationSettings = (shouldShow('terminalQuickKeys') && !isMobile) || shouldShow('fileEditorKeymap') || shouldShow('expandedEditorToolbar');
     const hasBehaviorSettings = shouldShow('mermaidRendering')
         || shouldShow('userMessageRendering')
         || shouldShow('chatRenderMode')
@@ -1274,30 +1274,6 @@ export const OpenChamberVisualSettings: React.FC<OpenChamberVisualSettingsProps>
                                 </div>
                             )}
 
-                            {shouldShow('expandedEditorToolbar') && (
-                                <div
-                                    data-settings-item="appearance.expanded-editor-toolbar"
-                                    className="group flex cursor-pointer items-center gap-2 py-1.5"
-                                    role="button"
-                                    tabIndex={0}
-                                    aria-pressed={expandedEditorToolbar}
-                                    onClick={() => handleExpandedEditorToolbarChange(!expandedEditorToolbar)}
-                                    onKeyDown={(event) => {
-                                        if (event.key === ' ' || event.key === 'Enter') {
-                                            event.preventDefault();
-                                            handleExpandedEditorToolbarChange(!expandedEditorToolbar);
-                                        }
-                                    }}
-                                >
-                                    <Checkbox
-                                        checked={expandedEditorToolbar}
-                                        onChange={handleExpandedEditorToolbarChange}
-                                        ariaLabel={t('settings.openchamber.visual.field.expandedEditorToolbarAria')}
-                                    />
-                                    <span className="typography-ui-label text-foreground">{t('settings.openchamber.visual.field.expandedEditorToolbar')}</span>
-                                </div>
-                            )}
-
                             </div>
 
                         </section>
@@ -1349,6 +1325,29 @@ export const OpenChamberVisualSettings: React.FC<OpenChamberVisualSettingsProps>
                                             );
                                         })}
                                     </div>
+                                </div>
+                            )}
+                            {shouldShow('expandedEditorToolbar') && (
+                                <div
+                                    data-settings-item="appearance.expanded-editor-toolbar"
+                                    className="group flex cursor-pointer items-center gap-2 py-1.5"
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-pressed={expandedEditorToolbar}
+                                    onClick={() => handleExpandedEditorToolbarChange(!expandedEditorToolbar)}
+                                    onKeyDown={(event) => {
+                                        if (event.key === ' ' || event.key === 'Enter') {
+                                            event.preventDefault();
+                                            handleExpandedEditorToolbarChange(!expandedEditorToolbar);
+                                        }
+                                    }}
+                                >
+                                    <Checkbox
+                                        checked={expandedEditorToolbar}
+                                        onChange={handleExpandedEditorToolbarChange}
+                                        ariaLabel={t('settings.openchamber.visual.field.expandedEditorToolbarAria')}
+                                    />
+                                    <span className="typography-ui-label text-foreground">{t('settings.openchamber.visual.field.expandedEditorToolbar')}</span>
                                 </div>
                             )}
                             {shouldShow('terminalQuickKeys') && !isMobile && (
