@@ -700,6 +700,9 @@ const renderTimelineItem = ({ item }: { item: RenderRow }) => <TimelineRow row={
 // column in the list when there is one, else from the column's own rule
 // (`.chat-message-column` in typography.css: 48rem unless the layout is wide,
 // about 1 to 1.5rem of padding on each side).
+const rootHasClass = (className: string): boolean =>
+    typeof document !== 'undefined' && document.documentElement.classList.contains(className);
+
 const readColumnWidth = (scroller: HTMLElement | null): number => {
     const column = scroller?.querySelector<HTMLElement>('.chat-message-column');
     if (column && column.clientWidth > 0) {
@@ -708,7 +711,12 @@ const readColumnWidth = (scroller: HTMLElement | null): number => {
     }
     const width = scroller?.clientWidth || window.innerWidth;
     const wide = Boolean(scroller?.closest('.wide-chat-layout'));
-    return Math.min(width, wide ? width : 768) - (width >= 1024 ? 48 : 32);
+    // Wide no longer implies the full window: a capped transcript preset
+    // (wideChatTranscriptWidth, column 64rem / wide 80rem) still carries the
+    // wide class. The fallback has no column to measure, so it reads the
+    // same root classes the layouts toggle; 'full' keeps the window width.
+    const wideCap = rootHasClass('wide-transcript-column') ? 1024 : rootHasClass('wide-transcript-wide') ? 1280 : width;
+    return Math.min(width, wide ? wideCap : 768) - (width >= 1024 ? 48 : 32);
 };
 
 // A touch device: raised tap targets (mobile.css) and native scroll momentum.

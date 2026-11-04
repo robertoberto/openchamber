@@ -177,6 +177,7 @@ const MobileShell: React.FC<{ onActiveConnectionDeleted: () => void }> = ({ onAc
   const [pendingChangesDiff, setPendingChangesDiff] = React.useState<{ path: string; staged: boolean } | null>(null);
   const setSettingsPage = useUIStore((state) => state.setSettingsPage);
   const wideChatLayoutEnabled = useUIStore((state) => state.wideChatLayoutEnabled);
+  const wideChatTranscriptWidth = useUIStore((state) => state.wideChatTranscriptWidth);
   const updateAvailable = useUpdateStore((state) => state.available);
   const updateRuntimeType = useUpdateStore((state) => state.runtimeType);
   const showCapacitorOnlyFeatures = React.useMemo(() => isCapacitorMobileApp(), []);
@@ -303,6 +304,16 @@ const MobileShell: React.FC<{ onActiveConnectionDeleted: () => void }> = ({ onAc
     root.classList.toggle('wide-chat-layout', wideChatLayoutEnabled);
     return () => root.classList.remove('wide-chat-layout');
   }, [wideChatLayoutEnabled]);
+
+  // Transcript width inside the wide layout (wideChatTranscriptWidth). Only
+  // the non-default presets carry a class; 'full' (the default) rides the
+  // CSS fallback, so nothing to clean between 'full' and a removed setting.
+  React.useEffect(() => {
+    const transcriptRoot = document.documentElement;
+    transcriptRoot.classList.toggle('wide-transcript-column', wideChatTranscriptWidth === 'column');
+    transcriptRoot.classList.toggle('wide-transcript-wide', wideChatTranscriptWidth === 'wide');
+    return () => transcriptRoot.classList.remove('wide-transcript-column', 'wide-transcript-wide');
+  }, [wideChatTranscriptWidth]);
 
   // The draft screen keeps its starter chips while the keyboard is up when
   // there is room for both: a tablet in portrait, or any tablet orientation
